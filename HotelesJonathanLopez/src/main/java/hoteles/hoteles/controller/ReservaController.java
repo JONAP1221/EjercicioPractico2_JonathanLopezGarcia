@@ -28,12 +28,28 @@ public class ReservaController {
         return "/index";
     }
     
-    @GetMapping("/index") //este es el API
-    public String inicio(Model model) {
+    @GetMapping("/HotelGregorio") //este es el API
+    public String HotelGregorio(Model model) {
         var reservas = reservaService.getReservas(false);//ese getReservaes se sacan los datos de la variable que se llamaba
         model.addAttribute("reservas", reservas);//el primero es el nombre que se le esta dando, es segundo es la variable 
-        model.addAttribute("totalReservaes", reservas.size());//.size le dice el tamaño que trae esa lista
-        return "/hotel/listado";
+        model.addAttribute("totalReservas", reservas.size());//.size le dice el tamaño que trae esa lista
+        return "/reserva/HotelGregorio";
+    }
+    
+    @GetMapping("/HotelAvellanas") //este es el API
+    public String HotelAvellanas(Model model) {
+        var reservas = reservaService.getReservas(false);//ese getReservaes se sacan los datos de la variable que se llamaba
+        model.addAttribute("reservas", reservas);//el primero es el nombre que se le esta dando, es segundo es la variable 
+        model.addAttribute("totalReservas", reservas.size());//.size le dice el tamaño que trae esa lista
+        return "/reserva/HotelAvellanas";
+    }
+    
+    @GetMapping("/HotelConchal") //este es el API
+    public String HotelConchal(Model model) {
+        var reservas = reservaService.getReservas(false);//ese getReservaes se sacan los datos de la variable que se llamaba
+        model.addAttribute("reservas", reservas);//el primero es el nombre que se le esta dando, es segundo es la variable 
+        model.addAttribute("totalReservas", reservas.size());//.size le dice el tamaño que trae esa lista
+        return "/reserva/HotelConchal";
     }
 
 

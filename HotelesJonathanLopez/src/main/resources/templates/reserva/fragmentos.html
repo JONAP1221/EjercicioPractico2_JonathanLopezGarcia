@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+      >
     <body>
         <!-- 1 Sección para crear el boton de agregar... llamará a una ventana modal-->
         <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light">
-            <div class="container" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDEDOR')">
+            <div class="container">
                 <div class="row">
                     <div class="col-md-3">   
                         <button 
@@ -26,8 +26,7 @@
                  class="modal fade" 
                  tabindex="-1" 
                  aria-labelledby="exampleModalLabel" 
-                 aria-hidden="true"
-                 sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDEDOR')">
+                 aria-hidden="true">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header bg-info text-white">
@@ -98,29 +97,25 @@
                                 <table class="table table-striped table-hovertable table-success table-striped-columns">
                                     <thead class="table-dark">
                                         <tr><th>#</th>
-                                            <th class="text-center">[[#{reserva.descripcion}]]</th>
-                                            <th class="text-center">[[#{reserva.precio}]]</th>
-                                            <th class="text-center">[[#{reserva.existencias}]]</th>
-                                            <th class="text-center">[[#{reserva.total}]]</th>
-                                            <th class="text-center">[[#{reserva.activo}]]</th>
-                                            <th class="text-center">[[#{reserva.categoria}]]</th>
+                                            <th class="text-center">Cliente</th>
+                                            <th class="text-center">Numero de huespedes</th>
+                                            <th class="text-center">Fecha de ingreso</th>
+                                            <th class="text-center">Fecha de salida</th>
                                             <th></th><th></th></tr>
                                     </thead>
                                     <tbody>
                                         <tr th:each="reserva, contador : ${reservas}">
                                             <td class="text-center">[[${contador.count}]]</td>
-                                            <td class="fs-6">[[${reserva.descripcion}]]</td>
-                                            <td class="text-end">[[${#numbers.formatDecimal(reserva.precio, 1, 'DEFAULT', 2, 'DEFAULT')}]]</td>
-                                            <td class="text-center">[[${reserva.existencias}]]</td>
-                                            <td class="text-end">[[${#numbers.formatDecimal(reserva.precio*reserva.existencias, 1, 'DEFAULT', 2, 'DEFAULT')}]]</td>
-                                            <td  class="text-center" th:text="${reserva.activo} ? 'Activa' : 'Inactiva'" />
-                                            <td>[[${reserva.categoria.descripcion}]]</td>
-                                            <td><a th:href="@{/reserva/eliminar/}+${reserva.idReserva}"
-                                                   class="btn btn-danger" sec:authorize="hasRole('ROLE_ADMIN')">
+                                            <td class="fs-6">[[${reserva.clienteNombre}]]</td>
+                                            <td class="fs-6">[[${reserva.numHuespedes}]]</td>
+                                            <td class="fs-6">[[${reserva.fechaIngreso}]]</td>
+                                            <td class="fs-6">[[${reserva.fechaSalida}]]</td>
+                                            <td><a th:href="@{/reserva/eliminar/}+${reserva.id}"
+                                                   class="btn btn-danger">
                                                     <i class="fas fa-trash"></i> [[#{accion.eliminar}]]</a></td>
                                             <td>
-                                                <a th:href="@{/reserva/modificar/}+${reserva.idReserva}"
-                                                   class="btn btn-success" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDEDOR')">
+                                                <a th:href="@{/reserva/modificar/}+${reserva.id}"
+                                                   class="btn btn-success">
                                                     <i class="fas fa-pencil"></i> [[#{accion.actualizar}]]</a></td></tr>
                                     </tbody>
                                 </table>
@@ -153,7 +148,7 @@
                           th:object="${reserva}"
                           class="was-validated"                          
                           enctype="multipart/form-data">
-                        <input type="hidden" name="idReserva" th:field="*{idReserva}"/>
+                        <input type="hidden" name="id" th:field="*{id}"/>
                         <input type="hidden" name="rutaImagen" th:field="*{rutaImagen}"/>
                         <input type="hidden" name="nuevaImagen" value="NO"/>
 
@@ -234,7 +229,7 @@
                         </a>
                     </div>
                     <div class="col-md-4 d-grid">                                
-                        <a th:href="@{/reserva/eliminar/}+${reserva.idReserva}"
+                        <a th:href="@{/reserva/eliminar/}+${reserva.id}"
                            class="btn btn-danger">
                             <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
                         </a>
