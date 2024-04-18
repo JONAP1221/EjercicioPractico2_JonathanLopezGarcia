@@ -1,12 +1,12 @@
 package hoteles.hoteles.dao;
 
-import hoteles.hoteles.domain.Usuario;
+import hoteles.hoteles.domain.UsuarioRoles;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioDao extends JpaRepository<Usuario, Long> {
-    Usuario findByUsername(String username);
+public interface UsuarioDao extends JpaRepository<UsuarioRoles, Long> {
+    UsuarioRoles findByUsername(String username);
     
-    Usuario findByUsernameAndPassword(String username, String Password);
+    UsuarioRoles findByUsernameAndPassword(String username, String Password);
 
     boolean existsByUsername(String username);
 }

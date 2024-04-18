@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -24,16 +26,8 @@ public class UsuarioRoles implements Serializable {
     private Usuario usuario;
     
     @Id
-    @ManyToOne
-    @JoinColumn(name = "rol_id")
-    private Rol rol;
+    @OneToMany
+    @JoinColumn(name = "id_usuario")
+    private List<Rol> roles;
     
-    // Getters y setters
-    
-    public UsuarioRoles() {}
-    
-    public UsuarioRoles(Usuario usuario, Rol rol) {
-        this.usuario = usuario;
-        this.rol = rol;
-    }
 }
