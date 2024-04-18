@@ -1,135 +1,64 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package hoteles.hoteles;
 
 import java.util.Locale;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-
 /**
  *
- * @author Jonathan
+ * @author gabriel badilla
  */
-@Configuration
-public class ProjectConfig implements WebMvcConfigurer {
-    //los soguientes metodos son para incorporar el tema de internalización en el proyecto
-
-    // localResolver se utiliza para crear una sesión de cambio de idioma
+public class ProjectConfig implements WebMvcConfigurer{
+    /*
+    Un @Bean son notaciones de spring que funcionan para definir metodos y seran 
+    gestionados por el contenedor de Spring 
+    
     @Bean
-    public LocaleResolver localeResolver() {
+    public LocaleResolver localeResolver () {
+    El localeResolver se utiliza para sesion de usuario y configuracion regional
+    */
+     @Bean
+    public SessionLocaleResolver localeResolver() {
         var slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.getDefault());
         slr.setLocaleAttributeName("session.current.locale");
         slr.setTimeZoneAttributeName("session.current.timezone");
         return slr;
-    }
-
+        }
+    
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
+    public LocaleChangeInterceptor localeChanceInterceptor(){
         var lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
     }
-
+    /*
+       Este funciona para cambiar el locale en funcion de una solicitud osea modifica el de arriba
+    */
+    /*
+    Este no lo entendi 
+    */
     @Override
-    public void addInterceptors(InterceptorRegistry registro) {
-        registro.addInterceptor(localeChangeInterceptor());
+    public void addInterceptors(InterceptorRegistry registro){
+        registro.addInterceptor(localeChanceInterceptor());
     }
-
-    @Bean("messageSource")
-    public MessageSource messageSource() {
+    /*
+        Este lee archivps y establece nombres base de los archivos de mensajes 
+    */
+    @Bean("messageBrouce")
+    public MessageSource messageSource(){
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("messages");
+        messageSource.setBasenames("message");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
-        registry.addViewController("/index").setViewName("index");
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/registro/nuevo").setViewName("/registro/nuevo");
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((request) -> request
-                .requestMatchers(
-                        "/", "/index", "/errores/**",
-                        "/carrito/**", "/pruebas/**", "/reportes/**",
-                        "/registro/**", "/js/**", "/webjars/**", "/css/**", "/img/**"
-                ).permitAll()
-                .requestMatchers(
-                        "/producto/nuevo", "/producto/guardar",
-                        "/producto/modificar/**", "/producto/eliminar/**",
-                        "/categoria/nuevo", "/categoria/guardar",
-                        "/categoria/modificar/**", "/categoria/eliminar/**",
-                        "/usuario/nuevo", "/usuario/guardar",
-                        "/usuario/modificar/**", "/usuario/eliminar/**",
-                        "/reportes/**"
-                ).hasRole("ADMIN")
-                .requestMatchers(
-                        "/producto/listado",
-                        "/categoria/listado",
-                        "/usuario/listado"
-                ).hasAnyRole("ADMIN", "VENDEDOR")
-                .requestMatchers(
-                        "/producto/listado",
-                        "/categoria/listado",
-                        "/usuario/listado"
-                ).hasAnyRole("USER")
-        )
-                .formLogin((form) -> form
-                .loginPage("/login").permitAll())
-                .logout((logout) -> logout.permitAll());
-
-        return http.build();
-    }
-
-    /*
-    @Bean
-    public UserDetailsService users() {
-        UserDetails admin = User.builder()
-                .username("Orslok")
-                .password("{noop}hola")
-                .roles("USER", "VENDEDOR", "ADMIN")
-                .build();
-        UserDetails sales = User.builder()
-                .username("gabriel")
-                .password("{noop}macho")
-                .roles("USER", "VENDEDOR")
-                .build();
-        UserDetails user = User.builder()
-                .username("jhonatan")
-                .password("{noop}guapo")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user, sales, admin);
-    }
-     */
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-    }
-
-}//final main
-
+    
+}

@@ -20,12 +20,12 @@ public class UsuarioRoles implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    @Id
+    
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-    
     @Id
+    private String usuario;
+    
     @OneToMany
     @JoinColumn(name = "id_usuario")
     private List<Rol> roles;
